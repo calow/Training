@@ -8,4 +8,18 @@
     <color name="fragment_bg">#e6e6e6</color>
     <color name="line_bg">#8a8a8a</color>
     <color name="item_selected_bg">#bfbfbf</color>
+    <color name="name_color">#8290AF</color>
+    <color name="share_color">#aeaeae</color>
+    <color name="content_color">#232323</color>
+    <color name="im_font_color_text_hint">#abb1b6</color>
+    <color name="im_social_dig_name_bg">#DDDDDD</color>
+
+    <color name="praise_item_default">#333333</color>
+    <color name="praise_item_selector_default">#cccccc</color>
+
+    <color name="im_line_color">#dadada</color>
+    <color name="transparent">#00000000</color>
+    <color name="default_clickable_color">#cccccc</color>
+    <color name="name_selector_color">#cccccc</color>
+
 </resources>
