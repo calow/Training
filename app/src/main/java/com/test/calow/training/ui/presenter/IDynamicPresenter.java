@@ -5,5 +5,5 @@ package com.test.calow.training.ui.presenter;
  */
 
 public interface IDynamicPresenter {
-    void getData();
+    void loadData(int loadType);
 }
