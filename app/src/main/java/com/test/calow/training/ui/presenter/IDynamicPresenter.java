@@ -6,4 +6,5 @@ package com.test.calow.training.ui.presenter;
 
 public interface IDynamicPresenter {
     void loadData(int loadType);
+    void deleteDynamic(String dynamicId);
 }

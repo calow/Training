@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.test.calow.training.R;
-import com.test.calow.training.ui.model.FavoriteEntity;
+import com.test.calow.training.ui.model.FavoriteItem;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class PraiseListView extends TextView {
 
     private int itemColor;
     private int itemSelectorColor;
-    private List<FavoriteEntity> datas;
+    private List<FavoriteItem> datas;
     private OnItemClickListener onItemClickListener;
 
     public PraiseListView(Context context) {
@@ -53,11 +53,11 @@ public class PraiseListView extends TextView {
         }
     }
 
-    public List<FavoriteEntity> getDatas() {
+    public List<FavoriteItem> getDatas() {
         return datas;
     }
 
-    public void setDatas(List<FavoriteEntity> datas) {
+    public void setDatas(List<FavoriteItem> datas) {
         this.datas = datas;
         notifyDataSetChanged();
     }
@@ -67,7 +67,7 @@ public class PraiseListView extends TextView {
         if (datas != null && datas.size() > 0){
             builder.append(getImageSpan());
             for (int i = 0; i < datas.size(); i++){
-                builder.append(getClickSpan(datas.get(i).getName(), i));
+                builder.append(getClickSpan(datas.get(i).getUser().getName(), i));
                 if (i != datas.size() -1){
                     builder.append(", ");
                 }
@@ -105,7 +105,7 @@ public class PraiseListView extends TextView {
         this.onItemClickListener = onItemClickListener;
     }
 
-    interface OnItemClickListener {
+    public interface OnItemClickListener {
         void onclick(int position);
     }
 

@@ -2,6 +2,7 @@ package com.test.calow.training.ui.fragment;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -89,6 +90,9 @@ public class Dynamic extends Fragment {
         switch (view.getId()) {
             case R.id.rl_round:
                 Log.d(TAG, "-------onViewClicked: --------");
+                Intent intent = new Intent();
+                intent.setAction("android.intent.action.user.dynamic");
+                startActivity(intent);
                 break;
             case R.id.rl_scan:
                 break;

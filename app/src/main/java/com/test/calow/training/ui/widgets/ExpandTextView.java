@@ -83,7 +83,7 @@ public class ExpandTextView extends LinearLayout {
                     tvPlus.setText("收起");
                     setExpand(true);
                 } else {
-                    tvContent.setMaxEms(showLines);
+                    tvContent.setMaxLines(showLines);
                     tvPlus.setText("全文");
                     setExpand(false);
                 }

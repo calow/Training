@@ -9,13 +9,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.malinskiy.superrecyclerview.OnMoreListener;
 import com.malinskiy.superrecyclerview.SuperRecyclerView;
 import com.test.calow.training.R;
 import com.test.calow.training.ui.adapter.DynamicCircleAdapter;
 import com.test.calow.training.ui.custom.TitleBarView;
+import com.test.calow.training.ui.model.DynamicEntity;
 import com.test.calow.training.ui.presenter.DynamicCirclePresenter;
 import com.test.calow.training.ui.view.IMainView;
 import com.test.calow.training.ui.widgets.DivItemDecoration;
+
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -100,4 +104,31 @@ public class DynamicActivity extends Activity implements IMainView{
     }
 
 
+    @Override
+    public void update2loadData(int loadType, List<DynamicEntity> datas) {
+        if (loadType == TYPE_PULLREFRESH){
+            rcSuper.setRefreshing(false);
+            mAdapter.setDatas(datas);
+        } else if (loadType == TYPE_UPLOADREFRESH) {
+            mAdapter.getDatas().addAll(datas);
+        }
+        mAdapter.notifyDataSetChanged();
+
+        if (mAdapter.getDatas().size() < 45 + mAdapter.HEADVIEW_SIZE){
+            rcSuper.setupMoreListener(new OnMoreListener() {
+                @Override
+                public void onMoreAsked(int overallItemsCount, int itemsBeforeMore, int maxLastVisiblePosition) {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mPresenter.loadData(TYPE_UPLOADREFRESH);
+                        }
+                    }, 2000);
+                }
+            }, 1);
+        } else {
+            rcSuper.removeMoreListener();
+            rcSuper.hideMoreProgress();
+        }
+    }
 }

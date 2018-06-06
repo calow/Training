@@ -38,6 +38,7 @@
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/tv_urlTip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
@@ -127,12 +128,19 @@
                     app:item_color="@color/name_color" />
 
                 <View
+                    android:id="@+id/lin_dig"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginBottom="5dp"
                     android:layout_marginTop="5dp"
                     android:background="@color/im_line_color" />
 
+                <com.test.calow.training.ui.widgets.CommentListView
+                    android:id="@+id/commentListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:item_color="@color/name_color" />
 
             </LinearLayout>
 

@@ -12,6 +12,12 @@ public class User implements Serializable {
     private String name;
     private String headUrl;
 
+    public User(String id, String name, String headUrl) {
+        this.id = id;
+        this.name = name;
+        this.headUrl = headUrl;
+    }
+
     public String getId() {
         return id;
     }
