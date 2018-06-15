@@ -31,6 +31,9 @@ public class Message extends Fragment implements IMessageView {
 
     public static final String TAG = "Message";
 
+    public static final int REFRESH_TYPE = 0;
+    public static final int UPLOAD_TYPE = 1;
+
     @InjectView(R.id.title_bar)
     TitleBarView titleBar;
     @InjectView(R.id.rv_list)
@@ -42,6 +45,7 @@ public class Message extends Fragment implements IMessageView {
     private View mBaseView;
     private MessagePresenter mMsgPresenter;
     private MessageAdapter mAdapter;
+    private SwipeRefreshLayout.OnRefreshListener refreshListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,20 +58,10 @@ public class Message extends Fragment implements IMessageView {
         mContext = getActivity();
         mBaseView = inflater.inflate(R.layout.fragment_message, null);
         ButterKnife.inject(this, mBaseView);
-        init();
         initTitle();
         initData();
+        firstTimeRefresh();
         return mBaseView;
-    }
-
-    public void init(){
-        rvList.setLayoutManager(new LinearLayoutManager(mContext.getApplicationContext()));
-        srlRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mMsgPresenter.refresh();
-            }
-        });
     }
 
     public void initTitle() {
@@ -75,10 +69,30 @@ public class Message extends Fragment implements IMessageView {
         titleBar.setTitleText(R.string.string_chat);
     }
 
-    public void initData() {
-        mMsgPresenter = MessagePresenter.getInstance();
-        mMsgPresenter.attachView(this);
-        mMsgPresenter.getData();
+    public void initData(){
+        mMsgPresenter = new MessagePresenter(this);
+        mAdapter = new MessageAdapter(mContext);
+        mAdapter.setPresenter(mMsgPresenter);
+        rvList.setAdapter(mAdapter);
+
+        rvList.setLayoutManager(new LinearLayoutManager(mContext.getApplicationContext()));
+        refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mMsgPresenter.getData(REFRESH_TYPE);
+            }
+        };
+        srlRefresh.setOnRefreshListener(refreshListener);
+    }
+
+    public void firstTimeRefresh() {
+        srlRefresh.post(new Runnable() {
+            @Override
+            public void run() {
+                srlRefresh.setRefreshing(true);
+                refreshListener.onRefresh();
+            }
+        });
     }
 
     @Override
@@ -94,18 +108,14 @@ public class Message extends Fragment implements IMessageView {
     }
 
     @Override
-    public void setAdapter(List<MessageEntity> list) {
-        mAdapter = new MessageAdapter(mContext, list);
-        rvList.setAdapter(mAdapter);
-    }
-
-    @Override
-    public void notifyAdapter() {
+    public void update2view(int type, List<MessageEntity> list) {
+        if (type == REFRESH_TYPE){
+            srlRefresh.setRefreshing(false);
+            mAdapter.setmDatas(list);
+        } else if (type == UPLOAD_TYPE){
+            mAdapter.getmDatas().addAll(list);
+        }
         mAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void stopRefresh() {
-        srlRefresh.setRefreshing(false);
-    }
 }

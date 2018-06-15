@@ -1,4 +1,4 @@
-package com.test.calow.training.ui.viewHolder;
+package com.test.calow.training.ui.viewholder;
 
 import android.view.View;
 import android.view.ViewStub;

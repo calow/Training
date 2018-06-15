@@ -32,6 +32,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private int currentPage = 1;
     private boolean loading = false;
     private Context mContext;
+    private MessagePresenter msgPresenter;
 
     Handler mHandler = new Handler(){
         @Override
@@ -48,14 +49,23 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 default:
                     break;
             }
-
         }
     };
 
-
-    public MessageAdapter(Context context, List<MessageEntity> list) {
+    public MessageAdapter(Context context) {
         this.mContext = context;
-        this.mDatas = list;
+    }
+
+    public void setPresenter(MessagePresenter presenter){
+        this.msgPresenter = presenter;
+    }
+
+    public List<MessageEntity> getmDatas() {
+        return mDatas;
+    }
+
+    public void setmDatas(List<MessageEntity> mDatas) {
+        this.mDatas = mDatas;
     }
 
     @Override
@@ -68,7 +78,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     .inflate(viewType, parent, false));
         } else {
             return new MessageViewHolder(LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.message_list_item, parent, false));
+                    .inflate(R.layout.message_list_item, null, false));
         }
     }
 
@@ -77,7 +87,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         if (holder instanceof LoadingViewHolder){
             if (!loading){
                 loading = true;
-                MessagePresenter.getInstance().loadMore(currentPage, PAGE_SIZE, new ILoadCallback<MessageEntity>() {
+                msgPresenter.loadMore(currentPage, PAGE_SIZE, new ILoadCallback<MessageEntity>() {
                     @Override
                     public void loadSuccess(List<MessageEntity> data) {
                         Message msg = Message.obtain();

@@ -10,7 +10,5 @@ import java.util.List;
 
 public interface IMessageView {
     void showToast(String string);
-    void setAdapter(List<MessageEntity> list);
-    void notifyAdapter();
-    void stopRefresh();
+    void update2view(int type, List<MessageEntity> list);
 }

@@ -1,11 +1,9 @@
 package com.test.calow.training.ui.presenter;
 
-import android.support.annotation.NonNull;
-
 import com.test.calow.training.ui.callback.ILoadCallback;
-import com.test.calow.training.ui.fragment.Message;
 import com.test.calow.training.ui.model.MessageEntity;
 import com.test.calow.training.ui.model.MessageModel;
+import com.test.calow.training.ui.view.IMessageView;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,27 +16,12 @@ import java.util.List;
 public class MessagePresenter implements IMessagePresenter {
 
     public static final String TAG = "MessagePresenter";
-    private Message msg;
+    private IMessageView msg;
     private MessageModel model;
 
-    private MessagePresenter() {
-        if (SingletonHolder.instance != null) {
-            throw new IllegalStateException();
-        }
-    }
-
-    private static class SingletonHolder {
-        private static MessagePresenter instance = new MessagePresenter();
-    }
-
-    public static MessagePresenter getInstance(){
-        return SingletonHolder.instance;
-    }
-
-    @Override
-    public void attachView(@NonNull Message view) {
+    public MessagePresenter(IMessageView view) {
         this.msg = view;
-        this.model = new MessageModel();
+        model = new MessageModel();
     }
 
     @Override
@@ -47,18 +30,9 @@ public class MessagePresenter implements IMessagePresenter {
     }
 
     @Override
-    public void getData() {
+    public void getData(int type) {
         if (msg != null){
-            msg.setAdapter(model.getData());
-        }
-    }
-
-    @Override
-    public void refresh() {
-        if (msg != null){
-            msg.setAdapter(model.getData());
-            msg.notifyAdapter();
-            msg.stopRefresh();
+            msg.update2view(type, model.getData());
         }
     }
 
